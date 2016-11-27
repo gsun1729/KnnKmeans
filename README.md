@@ -20,23 +20,27 @@ Because behavioral output is highly variable at small time scales, in order to e
 * Insidious changes in behavior can be characterized by slow gradual change over time. Large fluctuations in change are less likely to predict neurodegeneration, a process that typically takes years before disease state realization.
 
 # K-means Sliding Window
-In order to obtain time-scale data, the global history of patient data is partitioned via a sliding window of size S.  To generate each timepoint, the window advances foward I days per iteration and the local history contained within the window is subject to K-means clustering.  The cluster centroids are then accepted as a representation of the average behavior observed over that window.  Because of  the sliding window, subsequent data will be added and removed in a first in, first out manner, resulting in an overlap of S-I days between consecutive windows (Figure 3).
+In order to obtain time-scale data, the global history of patient data is partitioned via a sliding window of size S.  To generate each timepoint, the window advances foward I days per iteration and the local history contained within the window is subject to K-means clustering.  The cluster centroids are then accepted as a representation of the average behavior observed over that window.  Because of  the sliding window, subsequent data will be added and removed in a first in, first out manner, resulting in an overlap of S-I days between consecutive windows (Figure 2,3).
 
 ![alt Local Window Scan](https://raw.githubusercontent.com/gsun1729/Optimized-Kmeans/master/images/local_scan.png)
 <p>
-<b>Figure 3:</b> Scanning methodology of the sliding window.  With each iteration, the window moves fowards by I days.  Data in each window is then used to predict behavioral output for the next P days (red line).
+<b>Figure 2:</b> Scanning methodology of the sliding window.  With each iteration, the window moves fowards by I days.  Data in each window is then used to predict behavioral output for the next P days (red line).
+<p>
+<img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/process.png" alt="alt text" height="200" >
+<p>
+<b>Figure 3:</b> Data processing methodology.  
+<p>
 
-To optimize for the number of clusters, we utilized the elbow method, in which each window is clustered into 0 through k clusters.  The difference in sum of squared errors(SSE) is evaluated for each clustering.  This permits percentage of variance to be explained as a function of the number of clusters.  Because the optimal number of clusters should be where addition or reduction of the number of clusters does not yield better modeling of the data, the number of clusters selected is at the point where the marginal gain of adding more clusters drops.  This "elbow" is calculated via drawing a line from the SSE for 0 to k clusters, where k at maximum is the nubmer of points in the dataset.  The maximum orthogonal distance from each point (k,SSE) to the line will yield the point where addition of more clusters does not result in a better model.  This maximum distance is then correlated to its corresponding point to yield the optimal number of clusters, k<sub>O</sub> (Figure 2,3).  
+To optimize for the number of clusters, we utilized the elbow method, in which each window is clustered into 0 through k clusters.  The difference in sum of squared errors(SSE) is evaluated for each clustering.  This permits percentage of variance to be explained as a function of the number of clusters.  Because the optimal number of clusters should be where addition or reduction of the number of clusters does not yield better modeling of the data, the number of clusters selected is at the point where the marginal gain of adding more clusters drops.  This "elbow" is calculated via drawing a line from the SSE for 0 to k clusters, where k at maximum is the nubmer of points in the dataset.  The maximum orthogonal distance from each point (k,SSE) to the line will yield the point where addition of more clusters does not result in a better model.  This maximum distance is then correlated to its corresponding point to yield the optimal number of clusters, k<sub>O</sub> (Figure 4,5).  
 
 <img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/elbow.png" alt="alt text" height="200" >
-
-Figure 2: The optimal number of clusters is determined by the point where addition or subtraction of more clusters does not yield a better model fit, which is represented on the graph where the "elbow bend" occurs.  This point is determined by drawing a line (red) connecting the first and last SSE vs k data point and evaluating where the maximum orthogonal distance (green) from each point to the line occurs.  This iteration was run with categories 4 and 12 with a window of size 14.
+<p>
+<b>Figure 4:</b> The optimal number of clusters is determined by the point where addition or subtraction of more clusters does not yield a better model fit, which is represented on the graph where the "elbow bend" occurs.  This point is determined by drawing a line (red) connecting the first and last SSE vs k data point and evaluating where the maximum orthogonal distance (green) from each point to the line occurs.  This iteration was run with categories 4 and 12 with a window of size 14.
 
 <img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/export_2D_w14_c4,12/export_avgSSEdist_k.png" alt="alt text">
-
-Figure 3: The site at which the maximum orthogonal distance occurs is marked by the highest peak in this plot.  This iteration was run with categories 4 and 12 with a window of size 14.
+<p>
+<b>Figure 5:</b> The site at which the maximum orthogonal distance occurs is marked by the highest peak in this plot.  This iteration was run with categories 4 and 12 with a window of size 14.
 
 The optimal number of clusters (k<sub>O</sub>) were then used to cluster each window.  Because  k<sub>O</sub> varies window to window, comparison between windows is achieved by evaluating the minimum path distance between the cluster centroids, and for two dimensional cases, the area encapsulated by the centroids.
-
 
 
