@@ -7,14 +7,22 @@ Current diagnostic tools for neurodegeneration are highly invasive, time consumi
 
 Prior research has demonstrated neurodegeneration influences behavioral routines, albeit at various degrees dependent on disease state.  Basic routines, including and not limited to computer use, physical activity, and sleep patterns, have been implicated in neurodegenerative disease pathogenesis.  Under the premise that behavior impacts neural state, and that neural state influences behavior, we have developed an algorithmic approach for monitoring and identifying significant behavioral change over long time periods.  With the emergent popularity of activity trackers, such as Apple health, Google fit, and Fitbit trackers, our approach allows for dissection and interpretation of physiological and behavioral data to achieve diagnosis of neural state.
 
-Using various clustering and machine learning algorithms, this approach analyzes local and global histories of behavior and their emergent patterns to predict behavioral output changes as a recursive function of prior behavioral output history.  In particular, this method implements K-means clustering with a fast Fourier transform extrapolation to estimate future behavior output trajectories based on training parameters set by behavioral output.
+Using various clustering and machine learning algorithms, this approach analyzes local and global histories of behavior and their emergent patterns to predict behavioral output changes as a recursive function of prior behavioral output history.  In particular, this method implements K-means clustering with a fast Fourier transform extrapolation to estimate future behavior output trajectories based on training parameters set by behavioral output.  Additionally, this method is not limited by dimensionality of a dataset, although for data visualization may not be possible for dimensions greater than 3.
 
 ## Fundamental Assumptions
 Because behavioral output is highly variable at small time scales, in order to evaluate long term behavior we implement the following assumptions:
+* Behavioral routines are cyclical
 * Continuous small alterations in behavior integrated over time should alter behavioral clusters over time
 * Insidious changes in behavior can be characterized by slow gradual change over time. Large fluctuations in change are less likely to predict neurodegeneration, a process that typically takes years before disease state realization.
-* Behavioral routines are cyclical in the long term
 
+# K-means Sliding Window
+In order to obtain time-scale data, the global history of patient data is partitioned via a sliding window of size S.  To generate each timepoint, the window advances foward I days per iteration and the local history contained within the window is subject to K-means clustering.  The cluster centroids are then accepted as a representation of the average behavior observed over that window.  Because of  the sliding window, subsequent data will be added and removed in a first in, first out manner, resulting in an overlap of S-I days between consecutive windows (Figure 1).
+
+![alt Local Window Scan](https://raw.githubusercontent.com/gsun1729/Optimized-Kmeans/master/images/local_scan.png)
+
+Using K-means, the global history of patient data is partitioned in a sliding window of size S.  Each window of data contains n-dimensions of data with S time points per dimension.  After clustering into 
+
+To optimize for the number of clusters, we utilized the elbow method, in which each window is clustered into 0 through k clusters.  The different
 
 
 Because controlled stimuli do not predicate uniform behavioral output, this method uses clustering to normalize the spectrum of output.  By using center of mass (except with distance) weighing of data, a behavioral average can be determined.
