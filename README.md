@@ -19,10 +19,9 @@ Because behavioral output is highly variable at small time scales, in order to e
 In order to obtain time-scale data, the global history of patient data is partitioned via a sliding window of size S.  To generate each timepoint, the window advances foward I days per iteration and the local history contained within the window is subject to K-means clustering.  The cluster centroids are then accepted as a representation of the average behavior observed over that window.  Because of  the sliding window, subsequent data will be added and removed in a first in, first out manner, resulting in an overlap of S-I days between consecutive windows (Figure 1).
 
 ![alt Local Window Scan](https://raw.githubusercontent.com/gsun1729/Optimized-Kmeans/master/images/local_scan.png)
+Figure 1: Scanning methodology of the sliding window.  With each iteration, the window moves fowards by I days.  Data in each window is then used to predict behavioral output for the next P days (red line).
 
-Using K-means, the global history of patient data is partitioned in a sliding window of size S.  Each window of data contains n-dimensions of data with S time points per dimension.  After clustering into 
-
-To optimize for the number of clusters, we utilized the elbow method, in which each window is clustered into 0 through k clusters.  The different
+To optimize for the number of clusters, we utilized the elbow method, in which each window is clustered into 0 through k clusters.  The difference in sum of squared errors(SSE) is evaluated for each clustering.  This permits percentage of variance to be explained as a function of the number of clusters.  Because the optimal number of clusters should be where addition or reduction of the number of clusters does not yield better modeling of the data, the number of clusters selected is at the point where the marginal gain of adding more clusters drops.  This "elbow" is calculated via drawing a line from the SSE for 0 to k clusters, where k at maximum is the nubmer of points in the dataset.  The maximum orthogonal distance from each point (k,SSE) to the line will yield the point where addition of more clusters does not result in a better model.  This maximum distance is then correlated to its corresponding point to yield the optimal number of clusters, K_o (Figure 2).  
 
 
 Because controlled stimuli do not predicate uniform behavioral output, this method uses clustering to normalize the spectrum of output.  By using center of mass (except with distance) weighing of data, a behavioral average can be determined.
