@@ -41,7 +41,7 @@ To optimize for the number of clusters, we utilized the elbow method, in which e
 <p>
 <b>Figure 5:</b> The site at which the maximum orthogonal distance occurs is marked by the highest peak in this plot.  This iteration was run with categories 4 and 12 with a window of size 14.
 
-The optimal number of clusters (k<sub>O</sub>) were then used to cluster each window.  Because  k<sub>O</sub> varies window to window, comparison between windows is achieved by evaluating the minimum path distance between the cluster centroids, and for two dimensional cases, the area encapsulated by the centroids.
+The optimal number of clusters (k<sub>O</sub>) were then used to cluster each window.  Because  k<sub>O</sub> varies window to window, comparison between windows is achieved by evaluating the minimum path distance between the cluster centroids, and for two dimensional cases, the area encapsulated by the centroids.  On the first iteration, centroid locations are selected using the Forgy method; and adjusted accordingly.  With each advancement of the window, the previous window's centroids are fed as initial centroids into the next K-means iteration to allow for continuity of centroid migration.  If the optimal number of clusters is less than the number of existing centroids, centroids will be randomly selected for removal.  Likewise, if the optimal number of clusters is greater, additional centroids will be selected from the existing dataset via the Forgy method.
 
 ## Operation
 This program runs primarily off of fitbit data.  This can be obtained by downloading a .csv file of fitbit data [here](http://fitbit-export.azurewebsites.net/).  A sample input datafile has been included in the directory [here](https://github.com/gsun1729/Optimized-Kmeans/blob/master/sample_data.csv)
@@ -82,4 +82,8 @@ Once running the user specifies the number of dimensions to analyze and the cate
 For this part, window size was set to 14 days.  This is based on the assumption that it takes two weeks for any behaviors to cement within a user's routine.  Window size however can be adjusted according to need--note larger windows will mean that the influence of new queued data will have a lesser influence on centroid migration, and too small of a window will result in large influence on centroid migration.
 ### 2-Dimensional Datasets
 The following data was generated using categories 4 and 12 (activities-distance, and sleep-minutesAsleep).
-As observed in Figure 6
+As observed in Figure 6, variation in cluster centroids varies significantly with each movement of the window, and centroid number differs with each advancement.
+
+
+<img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/export_2D_w14_c4%2C12/export_2D.gif" alt="alt text" height="300" >
+<b>Figure 6:</b> Centroid migration and area calculation with each advancement of scanning window.
