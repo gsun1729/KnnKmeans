@@ -117,15 +117,45 @@ Additionally, k<sub>O</sub>  is subject to less variation without significant pe
 <p>
 <img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/export_w14_chx_0x513CA9F162/export_w14_c8D_SSE_k.png" alt="alt text" height="450" >
 <p>
-<b>Figure 11:</b>SSE vs k for k<sub>O</sub> determination.  Note the similarity of plots with each window iteration.
+<b>Figure 11:</b> SSE vs k for k<sub>O</sub> determination.  Note the similarity of plots with each window iteration.
 <p>
 <img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/export_w14_chx_0x513CA9F162/export_w14_c8D_SSEdist_k.png" alt="alt text" height="450" >
 <p>
-<b>Figure 12:</b>SSE max distance for k<sub>O</sub> determination.  Although there are a few iterations where the maximum distance oscillates, the majority of distance plots recognize 2-3 clusters as the optimal k<sub>O</sub>.
+<b>Figure 12:</b> SSE max distance for k<sub>O</sub> determination.  Although there are a few iterations where the maximum distance oscillates, the majority of distance plots recognize 2-3 clusters as the optimal k<sub>O</sub>.
 <p>
 <img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/export_w14_chx_0x513CA9F162/export_w14_c8D_pathdist.png" alt="alt text" height="450" >
 <p>
-<b>Figure 13:</b>Cluster Centroid Minimum path distance.  At time points 10,40 (windows), we observe the algorithm recognize a significant change in behavior due to travel, as well as maintenance of different behavior during the travel period.
+<b>Figure 13:</b> Cluster Centroid Minimum path distance.  At time points 10,40 (windows), we observe the algorithm recognize a significant change in behavior due to travel, as well as maintenance of different behavior during the travel period.
+
+## Prediction and Extrapolation
+In order to predict the next D days of activity, we implement a fast fourier transform.  Under the assumption that behavioral routines are cyclic, we adjusted the number of harmonics to 14, the same length as the training window under the assumption that the highest frequency of change observable is daily and the lowest frequency of change observable is once per two weeks.  The predictive window length was set to 5 days.
+
+Under this schema, the fourier transform was then used to predict future behavior under two different schemes, the first identical to the one illustrated in figure 2, and the second using a cumulative window in which the window elongates with each iteration (Figure 14).
+<p>
+<img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/cumulative_scan.png" alt="alt text" height="450" >
+<p>
+<b>Figure 14:</b> Cumulative window scanning operation.  Each prediction is now based on the entirety of prexisting data, as opposed to the shifting window method (Figure 2).
+
+### Scrolling Window Extrapolation
+Under the scrolling window extrapolation, we observe higher sensitivity to small changes in behavior as expected and larger variation in SSE.  One of the significant limitations of this method is that by sampling only the local window history to determine the extrapolation function, only behaviors exhibited in the window are accounted in the future prediction, without accounting for the previous range of behaviors (prior to the window).  This however could also be interpreted as a strength, expecially for examining short term behavior where older behavior does not influence present behavior (i.e. eating a cheesecake two months ago is not going to affect your propensity for cheesecake now).
+<p>
+<img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/export_w14_chx_0x513CA9F162/scrolling_window_extrapolation.gif" alt="alt text" height="450" >
+<p>
+<b>Figure 15:</b> Extrapolation under the scrolling window schema.  Note how due to the sinusoidal nature of the FFT, changes in behavior are assumed to be cyclic, which may result in the algorithm consistently overpredicting a change in a period of stability.
+<p>
+<img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/export_w14_chx_0x513CA9F162/local_window.png" alt="alt text" height="450" >
+<p>
+<b>Figure 16:</b> SSE of extrapolation with actual historical result indicates that the scrolling window method is influenced by large changes beyond the change itself--the system resembles that of an under-damped system due to the heightened sensitivity induced by the smaller window.
+### Cumulative Window Extrapolation
+Under the cumulative window extrapolation method, we observe at the beginning of the session significant over prediction, similar to that of the scrolling window.  However, due to the cumulative effect of the additional data, the system begins more like an overdamped system as the extrapolation moves forward.  Furthermore, we observe decreased sensitivity in SSE with regards to significant changes in behavior, as illustrated in figure 18.
+<p>
+<img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/export_w14_chx_0x513CA9F162/cumulative_window_extrapolation.gif" alt="alt text" height="450" >
+<p>
+<b>Figure 17:</b>Extrapolation and prediction under the cumulative window schema.  Although the model starts out poorly in the beginning, this is largely due to lack of data.  The beginning is similar to the scrolling window, in that the window is still considered small.  For instance, the first few windows, the window size will be 5,6,7,8,...; however the scrolling window has a constant window size of 5.
+<p>
+<img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/export_w14_chx_0x513CA9F162/cumulative_window_SSE.png" alt="alt text" height="450" >
+<p>
+<b>Figure 18:</b> SSE of extrapolation with actual historical result indicates that the cumulative scrolling window method is less influenced by large changes beyond the incident itself.  Large peaks could be used to predict large deviant behaviors, while smaller inclines could be used to characterize gradual change.
 
 
 
