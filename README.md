@@ -151,11 +151,19 @@ Under the cumulative window extrapolation method, we observe at the beginning of
 <p>
 <img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/export_w14_chx_0x513CA9F162/cumulative_window_extrapolation.gif" alt="alt text" height="450" >
 <p>
-<b>Figure 17:</b>Extrapolation and prediction under the cumulative window schema.  Although the model starts out poorly in the beginning, this is largely due to lack of data.  The beginning is similar to the scrolling window, in that the window is still considered small.  For instance, the first few windows, the window size will be 5,6,7,8,...; however the scrolling window has a constant window size of 5.
+<b>Figure 17:</b> Extrapolation and prediction under the cumulative window schema.  Although the model starts out poorly in the beginning, this is largely due to lack of data.  The beginning is similar to the scrolling window, in that the window is still considered small.  For instance, the first few windows, the window size will be 5,6,7,8,...; however the scrolling window has a constant window size of 5.
 <p>
 <img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/export_w14_chx_0x513CA9F162/cumulative_window_SSE.png" alt="alt text" height="450" >
 <p>
 <b>Figure 18:</b> SSE of extrapolation with actual historical result indicates that the cumulative scrolling window method is less influenced by large changes beyond the incident itself.  Large peaks could be used to predict large deviant behaviors, while smaller inclines could be used to characterize gradual change.
 
-
-
+### Global Extrapolation
+Although FFT extrapolation works very well in modeling the data (Figure 19), one of its limitations arises from its cyclic nature.  Because it assumes that behavior can be cyclic, it cannot predict beyond half a period outside of the training data.  This is best illustrated by figure 20, in which we observe that the extrapolation assumes continuity of behavioral patterns and poorly predicts the future by reiterating the training data.  This however can be corrected by increasing the number of harmonics in the FFT extrapolation.
+<p>
+<img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/export_w14_chx_0x513CA9F162/global_extrapolation_w14_p3_h14.png" alt="alt text" height="450" >
+<p>
+<b>Figure 19:</b> Global extrapolation of historical data.
+<p>
+<img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/export_w14_chx_0x513CA9F162/Historical_extrapolation_d100.png" alt="alt text" height="450" >
+<p>
+<b>Figure 20:</b> Predicting beyond the training data length can result in assuming that the present pattern will continue.
