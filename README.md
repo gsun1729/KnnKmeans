@@ -107,3 +107,25 @@ Because the input dataset is of two dimensions, we can visualize the area encapu
 <b>Figure 10:</b> Cluster centroid minimum path distance as a function of time.
 
 While both the minimum path distance and polygon area are capable of detecting change, the area analysis is much more sensitive than the path distance method, as change in any centroid is correlated with the area being scaled up or down.  Path distance is more lenient to smaller changes, as a small centroid deviation would not necessarily impact the rest of the centroids.  In other words, a small movement of one of the centroid points would influence the area encapsulated by the entire polygon, but could slightly alter the minimum path length, as each centroid would have a radius of change in which the centroid could move without altering the minimum path length.
+
+### 8 dimensional analysis.
+Although K-means requires at most 1 dimension to work, lower dimensionality results in higher sensitivity to change.  Considering the variability of behavior, this could be a major set back to behavioral modeling and prediction in that high sensitivity at lower dimensions would result difficulty distinguishing between significant and gradual changes in behavior.
+
+To evaluate the functionality of higher dimension analysis, we analyzed 8 dimensions of behavioral data, namely categories (3, 4, 8-10, 12-14).  Window size was set to 14 days.  One limitation of analyzing higher dimensions is that the area analysis is no longer applicable. However, it is significantly better at recognizing significant patterns in behavioral change, as illustrated in Figure 13, where the minimum centroid path distance recognizes at day 10 and 40 times when I was traveling, as well as the increased physical activity in between.
+
+Additionally, k<sub>O</sub>  is subject to less variation without significant perturbation of the system, as shown in figures 11,12, where k<sub>O</sub> is largely conserved at 2-3 clusters.
+<p>
+<img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/export_w14_chx_0x513CA9F162/export_w14_c8D_SSE_k.png" alt="alt text" height="450" >
+<p>
+<b>Figure 11:</b>SSE vs k for k<sub>O</sub> determination.  Note the similarity of plots with each window iteration.
+<p>
+<img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/export_w14_chx_0x513CA9F162/export_w14_c8D_SSEdist_k.png" alt="alt text" height="450" >
+<p>
+<b>Figure 12:</b>SSE max distance for k<sub>O</sub> determination.  Although there are a few iterations where the maximum distance oscillates, the majority of distance plots recognize 2-3 clusters as the optimal k<sub>O</sub>.
+<p>
+<img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/export_w14_chx_0x513CA9F162/export_w14_c8D_pathdist.png" alt="alt text" height="450" >
+<p>
+<b>Figure 13:</b>Cluster Centroid Minimum path distance.  At time points 10,40 (windows), we observe the algorithm recognize a significant change in behavior due to travel, as well as maintenance of different behavior during the travel period.
+
+
+
