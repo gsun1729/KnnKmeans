@@ -84,6 +84,14 @@ For this part, window size was set to 14 days.  This is based on the assumption 
 The following data was generated using categories 4 and 12 (activities-distance, and sleep-minutesAsleep).
 As observed in Figure 6, variation in cluster centroids varies significantly with each movement of the window, and centroid number differs with each advancement.
 
-
-<img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/export_2D_w14_c4%2C12/export_2D.gif" alt="alt text" height="300" >
+<img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/export_2D_w14_c4%2C12/export_2D.gif" alt="alt text" height="450" >
+<p>
 <b>Figure 6:</b> Centroid migration and area calculation with each advancement of scanning window.
+
+<img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/export_2D_w14_c4%2C12/export_SSE_k.png" alt="alt text" height="450" >
+<p>
+<b>Figure 7:</b> SSE calculation for k optimization highlights the variability of optimal k with each window
+
+<img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/export_2D_w14_c4%2C12/export_SSEdist_k.png" alt="alt text" height="450" >
+<p>
+<b>Figure 8:</b> SSE maximum variation calculation for k.
