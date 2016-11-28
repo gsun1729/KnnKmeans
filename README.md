@@ -95,3 +95,15 @@ As observed in Figure 6, variation in cluster centroids varies significantly wit
 <img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/export_2D_w14_c4%2C12/export_SSEdist_k.png" alt="alt text" height="450" >
 <p>
 <b>Figure 8:</b> SSE maximum variation calculation for k.
+
+Because the input dataset is of two dimensions, we can visualize the area encapuslated by the centroid verticies and minimum path distance.  Note for this case, the area encapsulated is representative of activity-distance multiplied by sleep-minutesAsleep.  A large area would indicate wider variation in the dataset.
+
+<img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/export_2D_w14_c4%2C12/export_area_time.png" alt="alt text" height="450" >
+<p>
+<b>Figure 9:</b> Centroid polygon area as a function of time. 
+
+<img src="https://github.com/gsun1729/Optimized-Kmeans/blob/master/images/export_2D_w14_c4%2C12/export_CMPD_time.png" alt="alt text" height="450" >
+<p>
+<b>Figure 10:</b> Cluster centroid minimum path distance as a function of time.
+
+While both the minimum path distance and polygon area are capable of detecting change, the area analysis is much more sensitive than the path distance method, as change in any centroid is correlated with the area being scaled up or down.  Path distance is more lenient to smaller changes, as a small centroid deviation would not necessarily impact the rest of the centroids.  In other words, a small movement of one of the centroid points would influence the area encapsulated by the entire polygon, but could slightly alter the minimum path length, as each centroid would have a radius of change in which the centroid could move without altering the minimum path length.
